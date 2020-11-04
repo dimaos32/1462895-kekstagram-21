@@ -4,6 +4,7 @@ module.exports = {
   mode: `development`,
   entry: [
     `./js/utils.js`,
+    `./js/edit-form.js`,
     `./js/main.js`,
   ],
   output: {
