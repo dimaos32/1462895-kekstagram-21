@@ -1,9 +1,16 @@
 'use strict';
 
+const BAR_WIDTH = 453;
+const PIN_POS_MIN = 0;
+const PIN_POS_MAX = 100;
+
 const photoEditForm = document.querySelector(`.img-upload__overlay`);
 const photoPreview = photoEditForm.querySelector(`.img-upload__preview img`);
 const effectLevelBar = photoEditForm.querySelector(`.effect-level`);
 const effectLevelPin = photoEditForm.querySelector(`.effect-level__pin`);
+const effectLevelDepth = photoEditForm.querySelector(`.effect-level__depth`);
+
+let effectLevelPinPos = 100;
 
 const none = () => {
   photoPreview.className = ``;
@@ -47,7 +54,18 @@ effectLevelPin.addEventListener(`mousedown`, function (evt) {
 
     startCoord = moveEvt.clientX;
 
-    effectLevelPin.style.left = `${effectLevelPin.offsetLeft + shift}px`;
+    effectLevelPinPos += (shift * PIN_POS_MAX / BAR_WIDTH);
+
+    if (effectLevelPinPos < PIN_POS_MIN) {
+      effectLevelPinPos = PIN_POS_MIN;
+    }
+
+    if (effectLevelPinPos > PIN_POS_MAX) {
+      effectLevelPinPos = PIN_POS_MAX;
+    }
+
+    effectLevelPin.style.left = `${effectLevelPinPos}%`;
+    effectLevelDepth.style.width = effectLevelPin.style.left;
   };
 
   const onMouseUp = function (upEvt) {
