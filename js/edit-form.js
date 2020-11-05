@@ -13,6 +13,7 @@ const scaleControlSmaller = photoEditForm.querySelector(`.scale__control--smalle
 const scaleControlBigger = photoEditForm.querySelector(`.scale__control--bigger`);
 const scaleControlValue = photoEditForm.querySelector(`.scale__control--value`);
 const photoPreview = photoEditForm.querySelector(`.img-upload__preview img`);
+const effectsList = photoEditForm.querySelector(`.effects__list`);
 
 const closePhotoEditForm = () => {
   photoEditForm.classList.add(`hidden`);
@@ -56,4 +57,8 @@ scaleControlSmaller.addEventListener(`click`, () => {
 
 scaleControlBigger.addEventListener(`click`, () => {
   getUpScale();
+});
+
+effectsList.addEventListener(`change`, (evt) => {
+  window.effects[evt.target.value]();
 });
