@@ -20,6 +20,7 @@ const Limit = {
 const photoEditForm = document.querySelector(`.img-upload__overlay`);
 const photoPreview = photoEditForm.querySelector(`.img-upload__preview img`);
 const effectsList = photoEditForm.querySelector(`.effects__list`);
+const effectNone = photoEditForm.querySelector(`#effect-none`);
 const effectLevelBar = photoEditForm.querySelector(`.effect-level`);
 const effectLevelValue = photoEditForm.querySelector(`.effect-level__value`);
 const effectLevelPin = photoEditForm.querySelector(`.effect-level__pin`);
@@ -82,6 +83,10 @@ effectsList.addEventListener(`change`, (evt) => {
   }
 });
 
+const resetEffects = () => {
+  effectNone.checked = true;
+};
+
 effectLevelPin.addEventListener(`mousedown`, function (evt) {
   evt.preventDefault();
 
@@ -122,3 +127,8 @@ effectLevelPin.addEventListener(`mousedown`, function (evt) {
   document.addEventListener(`mousemove`, onMouseMove);
   document.addEventListener(`mouseup`, onMouseUp);
 });
+
+window.effects = {
+  resetPinPos,
+  resetEffects,
+};

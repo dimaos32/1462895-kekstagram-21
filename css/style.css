@@ -744,6 +744,11 @@ main {
   border-radius: 5px;
 }
 
+.text__not-valid {
+  border: 2px solid #DC143C;
+  outline: none;
+}
+
 
 /**
  * Кнопка для отправки изображения

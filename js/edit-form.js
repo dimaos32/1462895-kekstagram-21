@@ -11,7 +11,8 @@ const MAX_TITLE_LENGTH = 140;
 const RE_HASHTAG = /^#[\wА-Яа-я]{1,19}$/;
 
 const page = document.querySelector(`body`);
-const photoEditForm = document.querySelector(`.img-upload__overlay`);
+const photoUploadForm = document.querySelector(`.img-upload__form`);
+const photoEditForm = photoUploadForm.querySelector(`.img-upload__overlay`);
 const photoUploadFormCancel = photoEditForm.querySelector(`#upload-cancel`);
 const scaleControlSmaller = photoEditForm.querySelector(`.scale__control--smaller`);
 const scaleControlBigger = photoEditForm.querySelector(`.scale__control--bigger`);
@@ -65,6 +66,68 @@ const checkHashtags = (str) => {
   return {value: true};
 };
 
+const resetForm = () => {
+  resizePhoto();
+  scaleControlValue.value = `100%`;
+  window.effects.resetPinPos();
+  window.effects.resetEffects();
+  photoPreview.className = ``;
+  photoPreview.style.filter = ``;
+  photoDescription.value = ``;
+  photoHashtags.value = ``;
+  closePhotoEditForm();
+};
+
+const onSendSuccess = () => {
+  const pageContent = document.querySelector(`main`);
+  const successMessage = document.querySelector(`#success`)
+    .content
+    .querySelector(`.success`)
+    .cloneNode(true);
+
+  const onClick = () => {
+    successMessage.remove();
+  };
+
+  const onEscPress = (evt) => {
+    if (evt.key === window.utils.Key.ESCAPE) {
+      successMessage.remove();
+    }
+  };
+
+  resetForm();
+
+  pageContent.append(successMessage);
+
+  successMessage.addEventListener(`click`, onClick);
+  document.addEventListener(`keydown`, onEscPress);
+};
+
+const onSendError = () => {
+  const pageContent = document.querySelector(`main`);
+  const errorMessage = document.querySelector(`#error`)
+  .content
+  .querySelector(`.error`)
+  .cloneNode(true);
+
+  const onClick = () => {
+    errorMessage.remove();
+  };
+
+  const onEscPress = (evt) => {
+    if (evt.key === window.utils.Key.ESCAPE) {
+      errorMessage.remove();
+    }
+  };
+
+  resetForm();
+
+  pageContent.append(errorMessage);
+
+  errorMessage.addEventListener(`click`, onClick);
+  document.addEventListener(`keydown`, onEscPress);
+};
+
 photoUploadFormCancel.addEventListener(`click`, () => {
   closePhotoEditForm();
 });
@@ -88,8 +151,10 @@ photoHashtags.addEventListener(`input`, () => {
   const validity = checkHashtags(photoHashtags.value);
 
   if (validity.value) {
+    photoHashtags.classList.remove(`text__not-valid`);
     photoHashtags.setCustomValidity(``);
   } else {
+    photoHashtags.classList.add(`text__not-valid`);
     switch (validity.reason) {
       case `QUANTITY`:
         photoHashtags.setCustomValidity(`Укажите не более 5 хэш-тегов`);
@@ -112,10 +177,17 @@ photoDescription.addEventListener(`input`, () => {
   if (valueLength > MAX_TITLE_LENGTH) {
     const extraSymbols = valueLength - MAX_TITLE_LENGTH;
 
+    photoDescription.classList.add(`text__not-valid`);
     photoDescription.setCustomValidity(`Допустимая длинна комментария - 140 символов. Удалите ${window.utils.getQEndings(extraSymbols, `symbol`)}`);
   } else {
+    photoDescription.classList.remove(`text__not-valid`);
     photoDescription.setCustomValidity(``);
   }
 
   photoDescription.reportValidity();
+});
+
+photoUploadForm.addEventListener(`submit`, (evt) => {
+  evt.preventDefault();
+  window.backend.send(new FormData(photoUploadForm), onSendSuccess, onSendError);
 });
