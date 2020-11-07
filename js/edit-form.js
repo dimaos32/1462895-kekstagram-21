@@ -70,7 +70,7 @@ photoUploadFormCancel.addEventListener(`click`, () => {
 });
 
 document.addEventListener(`keydown`, (evt) => {
-  if (evt.key === window.utils.Key.ESCAPE) {
+  if (evt.key === window.utils.Key.ESCAPE && photoDescription !== document.activeElement && photoHashtags !== document.activeElement) {
     evt.preventDefault();
     closePhotoEditForm();
   }
@@ -82,20 +82,6 @@ scaleControlSmaller.addEventListener(`click`, () => {
 
 scaleControlBigger.addEventListener(`click`, () => {
   getUpScale();
-});
-
-photoDescription.addEventListener(`input`, () => {
-  const valueLength = photoDescription.value.length;
-
-  if (valueLength > MAX_TITLE_LENGTH) {
-    const extraSymbols = valueLength - MAX_TITLE_LENGTH;
-
-    photoDescription.setCustomValidity(`Допустимая длинна комментария - 140 символов. Удалите ${window.utils.getQEndings(extraSymbols, `symbol`)}`);
-  } else {
-    photoDescription.setCustomValidity(``);
-  }
-
-  photoDescription.reportValidity();
 });
 
 photoHashtags.addEventListener(`input`, () => {
@@ -118,4 +104,18 @@ photoHashtags.addEventListener(`input`, () => {
   }
 
   photoHashtags.reportValidity();
+});
+
+photoDescription.addEventListener(`input`, () => {
+  const valueLength = photoDescription.value.length;
+
+  if (valueLength > MAX_TITLE_LENGTH) {
+    const extraSymbols = valueLength - MAX_TITLE_LENGTH;
+
+    photoDescription.setCustomValidity(`Допустимая длинна комментария - 140 символов. Удалите ${window.utils.getQEndings(extraSymbols, `symbol`)}`);
+  } else {
+    photoDescription.setCustomValidity(``);
+  }
+
+  photoDescription.reportValidity();
 });
