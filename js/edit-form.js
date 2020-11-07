@@ -6,6 +6,10 @@ const SCALE_STEP = 25;
 
 const PERSENTS_DEFAULT = 100;
 
+const MAX_TITLE_LENGTH = 140;
+
+const RE_HASHTAG = /^#[\wА-Яа-я]{1,19}$/;
+
 const page = document.querySelector(`body`);
 const photoEditForm = document.querySelector(`.img-upload__overlay`);
 const photoUploadFormCancel = photoEditForm.querySelector(`#upload-cancel`);
@@ -13,6 +17,7 @@ const scaleControlSmaller = photoEditForm.querySelector(`.scale__control--smalle
 const scaleControlBigger = photoEditForm.querySelector(`.scale__control--bigger`);
 const scaleControlValue = photoEditForm.querySelector(`.scale__control--value`);
 const photoPreview = photoEditForm.querySelector(`.img-upload__preview img`);
+const photoDescription = photoEditForm.querySelector(`.text__description`);
 
 const closePhotoEditForm = () => {
   photoEditForm.classList.add(`hidden`);
@@ -39,6 +44,30 @@ const getUpScale = () => {
   }
 };
 
+const checkHashtagsValidity = (str) => {
+  const hashtags = str.toLowerCase().split(` `).sort();
+
+  console.log(hashtags);
+
+  if (hashtags.length > 5) {
+    return false;
+  }
+
+  for (let i = 0; i < hashtags.length; i++) {
+    if (!RE_HASHTAG.test(hashtags[i])) {
+      return false;
+    }
+
+    if (i > 0 && (hashtags[i] === hashtags[i - 1])) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+console.log(checkHashtagsValidity(`#raz #dwa #tri #chet #pjat #shes`));
+
 photoUploadFormCancel.addEventListener(`click`, () => {
   closePhotoEditForm();
 });
@@ -56,4 +85,18 @@ scaleControlSmaller.addEventListener(`click`, () => {
 
 scaleControlBigger.addEventListener(`click`, () => {
   getUpScale();
+});
+
+photoDescription.addEventListener(`input`, () => {
+  const valueLength = photoDescription.value.length;
+
+  if (valueLength > MAX_TITLE_LENGTH) {
+    const extraSymbols = valueLength - MAX_TITLE_LENGTH;
+
+    photoDescription.setCustomValidity(`Допустимая длинна комментария - 140 символов. Удалите ${window.utils.getQEndings(extraSymbols, `symbol`)}`);
+  } else {
+    photoDescription.setCustomValidity(``);
+  }
+
+  photoDescription.reportValidity();
 });
