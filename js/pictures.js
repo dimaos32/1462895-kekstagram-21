@@ -55,15 +55,16 @@ const openPhoto = (id) => {
     commentsList.append(comment);
   };
 
-  const loadCommentsPotion = () => {
-    let i;
-    for (i = commentsShown.textContent;
-      i < commentsShown.textContent + 5 && i < comments.length;
-      i++) {
+  const loadCommentsPortion = () => {
+    const limit = parseInt(commentsCount.textContent, 10) - parseInt(commentsShown.textContent, 10) >= COMMENTS_PORTION
+      ? parseInt(commentsShown.textContent, 10) + COMMENTS_PORTION
+      : parseInt(commentsCount.textContent, 10);
 
+    for (let i = commentsShown.textContent; i < limit; i++) {
       addComment(i);
     }
-    commentsShown.textContent = i;
+
+    commentsShown.textContent = `${parseInt(commentsShown.textContent, 10) + limit}`;
   };
 
   photoDetails.querySelector(`.big-picture__img img`).src = url;
@@ -73,16 +74,10 @@ const openPhoto = (id) => {
   commentsShown.textContent = 0;
   commentsCount.textContent = comments.length;
 
-  // if (comments.length < COMMENTS_PORTION) {
-  //   commentsCount.textContent = comments.length;
-  //   commentsShown.textContent = comments.length;
-  // }
 
   commentsList.innerHTML = ``;
 
-  loadCommentsPotion();
-
-  console.log(photo);
+  loadCommentsPortion();
 
   photoDetails.classList.remove(`hidden`);
   page.classList.add(`modal-open`);
