@@ -27,8 +27,15 @@ const getQEndings = (q = 1, word) => {
   return `${q} ${qEndingsMap[word][2]}`;
 };
 
+const addId = (array) => {
+  return array.map((item, i) => {
+    return Object.assign({}, item, {id: `${i}`});
+  });
+};
+
 window.utils = {
   Key,
   checkExtensionAccordance,
   getQEndings,
+  addId,
 };

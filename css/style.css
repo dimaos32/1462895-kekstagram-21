@@ -1260,6 +1260,23 @@ main {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+.on-error-message {
+  position: absolute;
+  width: 600px;
+  margin: 0 auto;
+  padding: 0.5em;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  font-size: 18px;
+  font-weight: 700;;
+  text-align: center;
+  background-color: #ff0000;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+}
+
 .error__inner,
 .success__inner {
   position: relative;

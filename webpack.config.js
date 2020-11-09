@@ -5,6 +5,7 @@ module.exports = {
   entry: [
     `./js/utils.js`,
     `./js/backend.js`,
+    `./js/pictures.js`,
     `./js/effects.js`,
     `./js/edit-form.js`,
     `./js/main.js`,

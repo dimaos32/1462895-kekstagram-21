@@ -8,6 +8,21 @@ const photoUploadFormInput = photoUploadForm.querySelector(`#upload-file`);
 const photoPreview = photoUploadForm.querySelector(`.img-upload__preview img`);
 const photoEditForm = photoUploadForm.querySelector(`.img-upload__overlay`);
 
+const onLoadSuccess = (data) => {
+  window.photos = window.utils.addId(data);
+  console.log(window.photos);
+  window.pictures.renderPhotos(window.photos);
+};
+
+const onLoadError = (message) => {
+  const node = document.createElement(`div`);
+
+  node.classList.add(`on-error-message`);
+
+  node.textContent = message;
+  document.body.insertAdjacentElement(`afterbegin`, node);
+};
+
 const onPhotoLoad = (evt) => {
   const file = evt.target.files[0];
 
@@ -23,6 +38,8 @@ const onPhotoLoad = (evt) => {
     reader.readAsDataURL(file);
   }
 };
+
+window.backend.load(onLoadSuccess, onLoadError);
 
 photoUploadFormInput.addEventListener(`change`, (evt) => {
   onPhotoLoad(evt);
