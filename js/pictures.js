@@ -1,5 +1,9 @@
 'use strict';
 
+const page = document.querySelector(`body`);
+const photoDetails = document.querySelector(`.big-picture`);
+const photoDetailsClose = photoDetails.querySelector(`.big-picture__cancel`);
+
 const photoTemplate = document.querySelector(`#picture`)
   .content
   .querySelector(`.picture`);
@@ -26,6 +30,37 @@ const renderPhotos = (data) => {
 
   comunityPhotos.append(fragment);
 };
+
+const openPhoto = (id) => {
+  photoDetails.classList.remove(`hidden`);
+  page.classList.add(`modal-open`);
+};
+
+const closePhoto = () => {
+  photoDetails.classList.add(`hidden`);
+  page.classList.remove(`modal-open`);
+};
+
+const onPhotoClick = (evt) => {
+  if (evt.target.closest(`.picture`)) {
+    openPhoto(evt.target.closest(`.picture`).dataset.id);
+  }
+};
+
+comunityPhotos.addEventListener(`click`, (evt) => {
+  onPhotoClick(evt);
+});
+
+photoDetailsClose.addEventListener(`click`, () => {
+  closePhoto();
+});
+
+document.addEventListener(`keydown`, (evt) => {
+  if (evt.key === window.utils.Key.ESCAPE) {
+    evt.preventDefault();
+    closePhoto();
+  }
+});
 
 window.pictures = {
   renderPhotos,

@@ -10,7 +10,6 @@ const photoEditForm = photoUploadForm.querySelector(`.img-upload__overlay`);
 
 const onLoadSuccess = (data) => {
   window.photos = window.utils.addId(data);
-  console.log(window.photos);
   window.pictures.renderPhotos(window.photos);
 };
 
