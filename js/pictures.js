@@ -33,6 +33,13 @@ const renderPhotos = (data) => {
   comunityPhotos.append(fragment);
 };
 
+const onPhotoClick = (evt) => {
+  if (evt.target.closest(`.picture`)) {
+    evt.preventDefault();
+    openPhoto(evt.target.closest(`.picture`).dataset.id);
+  }
+};
+
 const openPhoto = (id) => {
   const photo = window.photos.find((item) => item.id === id);
 
@@ -46,6 +53,8 @@ const openPhoto = (id) => {
     .content
     .querySelector(`.social__comment`);
 
+  const commentsLoader = photoDetails.querySelector(`.social__comments-loader`);
+
   const addComment = (n) => {
     const comment = commentTemplate.cloneNode(true);
     comment.querySelector(`.social__picture`).src = comments[n].avatar;
@@ -56,15 +65,17 @@ const openPhoto = (id) => {
   };
 
   const loadCommentsPortion = () => {
-    const limit = parseInt(commentsCount.textContent, 10) - parseInt(commentsShown.textContent, 10) >= COMMENTS_PORTION
-      ? parseInt(commentsShown.textContent, 10) + COMMENTS_PORTION
-      : parseInt(commentsCount.textContent, 10);
+    let shown = parseInt(commentsShown.textContent, 10);
+    let total = parseInt(commentsCount.textContent, 10);
+    const toLoad = total - shown < COMMENTS_PORTION
+      ? total - shown
+      : COMMENTS_PORTION;
 
-    for (let i = commentsShown.textContent; i < limit; i++) {
+    for (let i = shown; i < shown + toLoad; i++) {
       addComment(i);
     }
 
-    commentsShown.textContent = `${parseInt(commentsShown.textContent, 10) + limit}`;
+    commentsShown.textContent = `${shown + toLoad}`;
   };
 
   photoDetails.querySelector(`.big-picture__img img`).src = url;
@@ -81,32 +92,39 @@ const openPhoto = (id) => {
 
   photoDetails.classList.remove(`hidden`);
   page.classList.add(`modal-open`);
-};
 
-const closePhoto = () => {
-  photoDetails.classList.add(`hidden`);
-  page.classList.remove(`modal-open`);
-};
+  const onCommentsLoaderClick = () => {
+    loadCommentsPortion();
+  };
 
-const onPhotoClick = (evt) => {
-  if (evt.target.closest(`.picture`)) {
-    openPhoto(evt.target.closest(`.picture`).dataset.id);
-  }
+  const onPhotoDetailsCloseClick = () => {
+    photoDetails.classList.add(`hidden`);
+    page.classList.remove(`modal-open`);
+
+    commentsLoader.removeEventListener(`click`, onCommentsLoaderClick);
+    photoDetailsClose.removeEventListener(`click`, onPhotoDetailsCloseClick);
+    document.removeEventListener(`keydown`, onPhotoDetailsEscPress);
+  };
+
+  const onPhotoDetailsEscPress = (evt) => {
+    if (evt.key === window.utils.Key.ESCAPE) {
+      evt.preventDefault();
+      photoDetails.classList.add(`hidden`);
+      page.classList.remove(`modal-open`);
+
+      commentsLoader.removeEventListener(`click`, onCommentsLoaderClick);
+      photoDetailsClose.removeEventListener(`click`, onPhotoDetailsCloseClick);
+      document.removeEventListener(`keydown`, onPhotoDetailsEscPress);
+    }
+  };
+
+  commentsLoader.addEventListener(`click`, onCommentsLoaderClick);
+  photoDetailsClose.addEventListener(`click`, onPhotoDetailsCloseClick);
+  document.addEventListener(`keydown`, onPhotoDetailsEscPress);
 };
 
 comunityPhotos.addEventListener(`click`, (evt) => {
   onPhotoClick(evt);
-});
-
-photoDetailsClose.addEventListener(`click`, () => {
-  closePhoto();
-});
-
-document.addEventListener(`keydown`, (evt) => {
-  if (evt.key === window.utils.Key.ESCAPE) {
-    evt.preventDefault();
-    closePhoto();
-  }
 });
 
 window.pictures = {
