@@ -8,6 +8,7 @@ module.exports = {
     `./js/pictures.js`,
     `./js/effects.js`,
     `./js/edit-form.js`,
+    `./js/filter.js`,
     `./js/main.js`,
   ],
   output: {

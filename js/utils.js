@@ -27,6 +27,21 @@ const getQEndings = (q = 1, word) => {
   return `${q} ${qEndingsMap[word][2]}`;
 };
 
+const getRandomArrayElements = (arr, n = 1) => {
+  let copySource = arr.slice();
+  let randomArray = [];
+
+  for (let i = 0; i < copySource.length && i < n; i++) {
+    const element = i + Math.floor(Math.random() * (copySource.length - i));
+    randomArray.push(copySource[element]);
+    const swap = copySource[element];
+    copySource[element] = copySource[i];
+    copySource[i] = swap;
+  }
+
+  return randomArray;
+};
+
 const addId = (array) => {
   return array.map((item, i) => {
     return Object.assign({}, item, {id: `${i}`});
@@ -37,5 +52,6 @@ window.utils = {
   Key,
   checkExtensionAccordance,
   getQEndings,
+  getRandomArrayElements,
   addId,
 };

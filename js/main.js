@@ -7,10 +7,12 @@ const photoUploadForm = document.querySelector(`.img-upload__form`);
 const photoUploadFormInput = photoUploadForm.querySelector(`#upload-file`);
 const photoPreview = photoUploadForm.querySelector(`.img-upload__preview img`);
 const photoEditForm = photoUploadForm.querySelector(`.img-upload__overlay`);
+const filter = document.querySelector(`.img-filters`);
 
 const onLoadSuccess = (data) => {
   window.photos = window.utils.addId(data);
   window.pictures.renderPhotos(window.photos);
+  filter.classList.remove(`img-filters--inactive`);
 };
 
 const onLoadError = (message) => {

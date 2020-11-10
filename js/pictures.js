@@ -22,8 +22,18 @@ const renderPhoto = (item) => {
   return photoPreset;
 };
 
+const deletePhotos = () => {
+  const photos = comunityPhotos.querySelectorAll(`.picture`);
+
+  photos.forEach((photo) => {
+    photo.remove();
+  });
+};
+
 const renderPhotos = (data) => {
   const fragment = document.createDocumentFragment();
+
+  deletePhotos();
 
   for (let i = 0; i < data.length; i++) {
     fragment.append(renderPhoto(data[i]));
