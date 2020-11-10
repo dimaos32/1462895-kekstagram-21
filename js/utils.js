@@ -1,5 +1,7 @@
 'use strict';
 
+const DEBOUNCE_INTERVAL = 500;
+
 const Key = {
   ENTER: `Enter`,
   ESCAPE: `Escape`,
@@ -48,10 +50,26 @@ const addId = (array) => {
   });
 };
 
+const debounce = (cb, interval = DEBOUNCE_INTERVAL) => {
+  let lastTimeout = null;
+
+  return function (...args) {
+
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+
+    lastTimeout = window.setTimeout(() => {
+      cb(...args);
+    }, interval);
+  };
+};
+
 window.utils = {
   Key,
   checkExtensionAccordance,
   getQEndings,
   getRandomArrayElements,
   addId,
+  debounce,
 };
