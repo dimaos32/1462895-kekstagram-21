@@ -42,6 +42,4 @@ const onPhotoLoad = (evt) => {
 
 window.backend.load(onLoadSuccess, onLoadError);
 
-photoUploadFormInput.addEventListener(`change`, (evt) => {
-  onPhotoLoad(evt);
-});
+photoUploadFormInput.addEventListener(`change`, onPhotoLoad);

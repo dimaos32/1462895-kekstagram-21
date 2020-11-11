@@ -22,6 +22,7 @@ const photoDescription = photoEditForm.querySelector(`.text__description`);
 const photoHashtags = photoEditForm.querySelector(`.text__hashtags`);
 
 const closePhotoEditForm = () => {
+  photoUploadForm.reset();
   photoEditForm.classList.add(`hidden`);
   page.classList.remove(`modal-open`);
 };
@@ -54,11 +55,11 @@ const checkHashtags = (str) => {
   }
 
   for (let i = 0; i < hashtags.length; i++) {
-    if (!RE_HASHTAG.test(hashtags[i])) {
+    if (!RE_HASHTAG.test(hashtags[i]) && str) {
       return {value: false, reason: `RE`};
     }
 
-    if (i > 0 && (hashtags[i] === hashtags[i - 1])) {
+    if (i > 0 && hashtags[i] === hashtags[i - 1]) {
       return {value: false, reason: `DOUBLING`};
     }
   }
@@ -87,11 +88,17 @@ const onSendSuccess = () => {
 
   const onClick = () => {
     successMessage.remove();
+
+    successMessage.removeEventListener(`click`, onClick);
+    document.removeEventListener(`keydown`, onEscPress);
   };
 
   const onEscPress = (evt) => {
     if (evt.key === window.utils.Key.ESCAPE) {
       successMessage.remove();
+
+      successMessage.removeEventListener(`click`, onClick);
+      document.removeEventListener(`keydown`, onEscPress);
     }
   };
 
@@ -129,13 +136,13 @@ const onSendError = () => {
 };
 
 photoUploadFormCancel.addEventListener(`click`, () => {
-  closePhotoEditForm();
+  resetForm();
 });
 
 document.addEventListener(`keydown`, (evt) => {
   if (evt.key === window.utils.Key.ESCAPE && photoDescription !== document.activeElement && photoHashtags !== document.activeElement) {
     evt.preventDefault();
-    closePhotoEditForm();
+    resetForm();
   }
 });
 
