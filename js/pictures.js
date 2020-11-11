@@ -3,12 +3,19 @@
 const COMMENTS_TO_LOAD_MAX = 5;
 
 const page = document.querySelector(`body`);
+const comunityPhotos = document.querySelector(`.pictures`);
 const photoDetails = document.querySelector(`.big-picture`);
+const commentsShown = photoDetails.querySelector(`.comments-shown`);
+const commentsCount = photoDetails.querySelector(`.comments-count`);
+const commentsList = photoDetails.querySelector(`.social__comments`);
+const commentsLoader = photoDetails.querySelector(`.social__comments-loader`);
 const photoDetailsClose = photoDetails.querySelector(`.big-picture__cancel`);
 const photoTemplate = document.querySelector(`#picture`)
   .content
   .querySelector(`.picture`);
-const comunityPhotos = document.querySelector(`.pictures`);
+const commentTemplate = document.querySelector(`#social__comment`)
+  .content
+  .querySelector(`.social__comment`);
 
 const renderPhoto = (item) => {
   const photoPreset = photoTemplate.cloneNode(true);
@@ -45,13 +52,6 @@ const renderPhotos = (data) => {
 const openPhoto = (id) => {
   const photo = window.photos.find((item) => item.id === id);
   const {comments, description, likes, url} = photo;
-  const commentsShown = photoDetails.querySelector(`.comments-shown`);
-  const commentsCount = photoDetails.querySelector(`.comments-count`);
-  const commentsList = photoDetails.querySelector(`.social__comments`);
-  const commentTemplate = document.querySelector(`#social__comment`)
-    .content
-    .querySelector(`.social__comment`);
-  const commentsLoader = photoDetails.querySelector(`.social__comments-loader`);
 
   const addComment = (n) => {
     const comment = commentTemplate.cloneNode(true);

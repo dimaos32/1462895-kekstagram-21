@@ -4,13 +4,14 @@ const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 const SCALE_STEP = 25;
 
-const PERSENTS_DEFAULT = 100;
+const PERСENTS_DEFAULT = 100;
 
 const MAX_TITLE_LENGTH = 140;
 
 const RE_HASHTAG = /^#[\wА-Яа-я]{1,19}$/;
 
 const page = document.querySelector(`body`);
+const pageContent = page.querySelector(`main`);
 const photoUploadForm = document.querySelector(`.img-upload__form`);
 const photoEditForm = photoUploadForm.querySelector(`.img-upload__overlay`);
 const photoUploadFormCancel = photoEditForm.querySelector(`#upload-cancel`);
@@ -35,7 +36,7 @@ const getDownScale = () => {
   const scaleValue = parseInt(scaleControlValue.value, 10);
   if (scaleValue > SCALE_MIN) {
     scaleControlValue.value = `${scaleValue - SCALE_STEP}%`;
-    resizePhoto((scaleValue - SCALE_STEP) / PERSENTS_DEFAULT);
+    resizePhoto((scaleValue - SCALE_STEP) / PERСENTS_DEFAULT);
   }
 };
 
@@ -43,7 +44,7 @@ const getUpScale = () => {
   const scaleValue = parseInt(scaleControlValue.value, 10);
   if (scaleValue < SCALE_MAX) {
     scaleControlValue.value = `${scaleValue + SCALE_STEP}%`;
-    resizePhoto((scaleValue + SCALE_STEP) / PERSENTS_DEFAULT);
+    resizePhoto((scaleValue + SCALE_STEP) / PERСENTS_DEFAULT);
   }
 };
 
@@ -70,8 +71,8 @@ const checkHashtags = (str) => {
 const resetForm = () => {
   resizePhoto();
   scaleControlValue.value = `100%`;
-  window.effects.resetPinPos();
-  window.effects.resetEffects();
+  window.effects.resetValue();
+  window.effects.reset();
   photoPreview.className = ``;
   photoPreview.style.filter = ``;
   photoDescription.value = ``;
@@ -80,7 +81,6 @@ const resetForm = () => {
 };
 
 const onSendSuccess = () => {
-  const pageContent = document.querySelector(`main`);
   const successMessage = document.querySelector(`#success`)
     .content
     .querySelector(`.success`)
@@ -111,7 +111,6 @@ const onSendSuccess = () => {
 };
 
 const onSendError = () => {
-  const pageContent = document.querySelector(`main`);
   const errorMessage = document.querySelector(`#error`)
   .content
   .querySelector(`.error`)

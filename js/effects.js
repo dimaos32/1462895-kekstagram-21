@@ -87,12 +87,12 @@ const resetEffects = () => {
   effectNone.checked = true;
 };
 
-effectLevelPin.addEventListener(`mousedown`, function (evt) {
+effectLevelPin.addEventListener(`mousedown`, (evt) => {
   evt.preventDefault();
 
   let startCoord = evt.clientX;
 
-  const onMouseMove = function (moveEvt) {
+  const onMouseMove = (moveEvt) => {
     moveEvt.preventDefault();
 
     const shift = moveEvt.clientX - startCoord;
@@ -129,6 +129,6 @@ effectLevelPin.addEventListener(`mousedown`, function (evt) {
 });
 
 window.effects = {
-  resetPinPos,
-  resetEffects,
+  resetValue: resetPinPos,
+  reset: resetEffects,
 };
