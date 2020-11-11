@@ -1,6 +1,6 @@
 'use strict';
 
-const COMMENTS_DOSE = 5;
+const COMMENTS_TO_LOAD_MAX = 5;
 
 const page = document.querySelector(`body`);
 const photoDetails = document.querySelector(`.big-picture`);
@@ -35,9 +35,9 @@ const renderPhotos = (data) => {
 
   deletePhotos();
 
-  for (let i = 0; i < data.length; i++) {
-    fragment.append(renderPhoto(data[i]));
-  }
+  data.forEach((photo) => {
+    fragment.append(renderPhoto(photo));
+  });
 
   comunityPhotos.append(fragment);
 };
@@ -63,15 +63,17 @@ const openPhoto = (id) => {
   };
 
   const loadCommentsPortion = () => {
-    const commentsToLoad = parseInt(commentsCount.textContent, 10) - parseInt(commentsShown.textContent, 10) < COMMENTS_DOSE
-      ? parseInt(commentsCount.textContent, 10) - parseInt(commentsShown.textContent, 10)
-      : COMMENTS_DOSE;
+    const commentsLoaded = parseInt(commentsShown.textContent, 10);
+    const commentsTotal = parseInt(commentsCount.textContent, 10);
+    const commentsToLoad = commentsTotal - commentsLoaded < COMMENTS_TO_LOAD_MAX
+      ? commentsTotal - commentsLoaded
+      : COMMENTS_TO_LOAD_MAX;
 
-    for (let i = parseInt(commentsShown.textContent, 10); i < parseInt(commentsShown.textContent, 10) + commentsToLoad; i++) {
+    for (let i = commentsLoaded; i < commentsLoaded + commentsToLoad; i++) {
       addComment(i);
     }
 
-    commentsShown.textContent = `${parseInt(commentsShown.textContent, 10) + commentsToLoad}`;
+    commentsShown.textContent = `${commentsLoaded + commentsToLoad}`;
 
     if (commentsShown.textContent === commentsCount.textContent) {
       commentsLoader.classList.add(`hidden`);
