@@ -21,6 +21,12 @@ const scaleControlValue = photoEditForm.querySelector(`.scale__control--value`);
 const photoPreview = photoEditForm.querySelector(`.img-upload__preview img`);
 const photoDescription = photoEditForm.querySelector(`.text__description`);
 const photoHashtags = photoEditForm.querySelector(`.text__hashtags`);
+const templateSuccessMessage = document.querySelector(`#success`)
+  .content
+  .querySelector(`.success`);
+const templateErrorMessage = document.querySelector(`#error`)
+  .content
+  .querySelector(`.error`);
 
 const closePhotoEditForm = () => {
   photoUploadForm.reset();
@@ -80,58 +86,37 @@ const resetForm = () => {
   closePhotoEditForm();
 };
 
-const onSendSuccess = () => {
-  const successMessage = document.querySelector(`#success`)
-    .content
-    .querySelector(`.success`)
-    .cloneNode(true);
+const onSendResult = (template) => {
+  const message = template.cloneNode(true);
 
   const onClick = () => {
-    successMessage.remove();
+    message.remove();
 
-    successMessage.removeEventListener(`click`, onClick);
+    message.removeEventListener(`click`, onClick);
     document.removeEventListener(`keydown`, onEscPress);
   };
 
   const onEscPress = (evt) => {
     if (evt.key === window.utils.Key.ESCAPE) {
-      successMessage.remove();
-
-      successMessage.removeEventListener(`click`, onClick);
+      message.remove();
       document.removeEventListener(`keydown`, onEscPress);
     }
   };
 
   resetForm();
 
-  pageContent.append(successMessage);
+  pageContent.append(message);
 
-  successMessage.addEventListener(`click`, onClick);
+  message.addEventListener(`click`, onClick);
   document.addEventListener(`keydown`, onEscPress);
 };
 
+const onSendSuccess = () => {
+  onSendResult(templateSuccessMessage);
+};
+
 const onSendError = () => {
-  const errorMessage = document.querySelector(`#error`)
-  .content
-  .querySelector(`.error`)
-  .cloneNode(true);
-
-  const onClick = () => {
-    errorMessage.remove();
-  };
-
-  const onEscPress = (evt) => {
-    if (evt.key === window.utils.Key.ESCAPE) {
-      errorMessage.remove();
-    }
-  };
-
-  resetForm();
-
-  pageContent.append(errorMessage);
-
-  errorMessage.addEventListener(`click`, onClick);
-  document.addEventListener(`keydown`, onEscPress);
+  onSendResult(templateErrorMessage);
 };
 
 photoUploadFormCancel.addEventListener(`click`, () => {
