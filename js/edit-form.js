@@ -169,7 +169,7 @@ photoDescription.addEventListener(`input`, () => {
     const extraSymbols = valueLength - MAX_TITLE_LENGTH;
 
     photoDescription.classList.add(`text__not-valid`);
-    photoDescription.setCustomValidity(`Допустимая длинна комментария - 140 символов. Удалите ${window.utils.getQEndings(extraSymbols, `symbol`)}`);
+    photoDescription.setCustomValidity(`Допустимая длинна комментария - ${MAX_TITLE_LENGTH} символов. Удалите ${window.utils.getQEndings(extraSymbols, `symbol`)}`);
   } else {
     photoDescription.classList.remove(`text__not-valid`);
     photoDescription.setCustomValidity(``);
