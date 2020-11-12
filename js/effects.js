@@ -115,7 +115,7 @@ effectLevelPin.addEventListener(`mousedown`, (evt) => {
     effectLevelDepth.style.width = effectLevelPin.style.left;
   };
 
-  const onMouseUp = function (upEvt) {
+  const onMouseUp = (upEvt) => {
     upEvt.preventDefault();
 
     effectLevelValue.value = Math.round(pinPos);
