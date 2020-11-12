@@ -8,6 +8,7 @@ const PERСENTS_DEFAULT = 100;
 
 const MAX_TITLE_LENGTH = 140;
 
+const HASHTAGS_MAX_QUANTITY = 5;
 const RE_HASHTAG = /^#[\wА-Яа-я]{1,19}$/;
 
 const page = document.querySelector(`body`);
@@ -57,7 +58,7 @@ const getUpScale = () => {
 const checkHashtags = (str) => {
   const hashtags = str.trim().toLowerCase().split(` `).sort();
 
-  if (hashtags.length > 5) {
+  if (hashtags.length > HASHTAGS_MAX_QUANTITY) {
     return {value: false, reason: `QUANTITY`};
   }
 
@@ -148,7 +149,7 @@ photoHashtags.addEventListener(`input`, () => {
     photoHashtags.classList.add(`text__not-valid`);
     switch (validity.reason) {
       case `QUANTITY`:
-        photoHashtags.setCustomValidity(`Укажите не более 5 хэш-тегов`);
+        photoHashtags.setCustomValidity(`Укажите не более ${HASHTAGS_MAX_QUANTITY} хэш-тегов`);
         break;
       case `RE`:
         photoHashtags.setCustomValidity(`Каждый хэш-тег должен начинаться с символа # (решётка), может состоять из букв, чисел и _ (символ подчеркивания), хеш-тег не может состоять только из одной решётки, максимальная длина одного хэш-тега 20 символов, включая решётку`);
